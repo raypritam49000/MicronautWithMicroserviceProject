@@ -1,0 +1,125 @@
+{
+  "version": 3,
+  "extra_config": {
+    "github_com/devopsfaith/krakend-opencensus": {
+      "sample_rate": 100,
+      "reporting_period": 1,
+      "exporters": {
+        "zipkin": {
+          "collector_url": "http://localhost:9411/api/v2/spans",
+          "service_name": "api-gateway"
+        }
+      }
+    },
+    "github_com/devopsfaith/krakend-metrics": {
+      "collection_time": "30s",
+      "proxy_disabled": false,
+      "listen_address": ":8090"
+    }
+  },
+  "timeout": "3000ms",
+  "cache_ttl": "300s",
+  "output_encoding": "json",
+  "name": "Micronaut-Gateway",
+  "endpoints": [
+    {
+      "endpoint": "/department/{id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/departments/{id}",
+          "sd": "dns",
+          "host": [
+            "department-service.service.consul"
+          ],
+          "disable_host_sanitize": true
+        }
+      ]
+    },
+    {
+      "endpoint": "/department-with-employees/{organizationId}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/departments/organization/{organizationId}/with-employees",
+          "sd": "dns",
+          "host": [
+            "department-service.service.consul"
+          ],
+          "disable_host_sanitize": true,
+          "is_collection": true
+        }
+      ]
+    },
+    {
+      "endpoint": "/department",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/departments",
+          "sd": "dns",
+          "host": [
+            "department-service.service.consul"
+          ],
+          "disable_host_sanitize": true
+        }
+      ]
+    },
+    {
+      "endpoint": "/employee/{id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/employees/{id}",
+          "sd": "dns",
+          "host": [
+            "employee-service.service.consul"
+          ],
+          "disable_host_sanitize": true
+        }
+      ]
+    },
+    {
+      "endpoint": "/employee",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/employees",
+          "sd": "dns",
+          "host": [
+            "employee-service.service.consul"
+          ],
+          "disable_host_sanitize": true
+        }
+      ]
+    },
+    {
+      "endpoint": "/organization/{id}",
+      "method": "GET",
+      "backend": [
+        {
+          "url_pattern": "/organizations/{id}",
+          "sd": "dns",
+          "host": [
+            "organization-service.service.consul"
+          ],
+          "disable_host_sanitize": true
+        }
+      ]
+    },
+    {
+      "endpoint": "/organization",
+      "method": "POST",
+      "backend": [
+        {
+          "url_pattern": "/organizations",
+          "sd": "dns",
+          "host": [
+            "organization-service.service.consul"
+          ],
+          "disable_host_sanitize": true
+        }
+      ]
+    }
+  ]
+}

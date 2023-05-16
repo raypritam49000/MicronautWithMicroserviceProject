@@ -1,0 +1,45 @@
+micronaut:
+  server:
+    port: 7777
+  application:
+    name: rating-service
+
+  router:
+    static-resources:
+      swagger:
+        paths: classpath:META-INF/swagger
+        mapping: /swagger/**
+      swagger-ui:
+        paths: classpath:META-INF/swagger/views/swagger-ui
+        mapping: /swagger-ui/**
+
+
+datasources:
+  default:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test
+    username: root
+    password: 0003pray
+    minimumIdle: 5
+    maximumPoolSize: 10
+jpa:
+  default:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        show_sql: true
+        format_sql: true
+        hbm2ddl:
+          auto: update
+
+
+endpoints:
+  info:
+    enabled: true
+    sensitive: false
+
+eureka:
+  client:
+    registration:
+      enabled: true
+    defaultZone: ${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}
